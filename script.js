@@ -4,7 +4,7 @@ let firstCard, secondCard;
 let lockBoard = false;
 
 //função que reseta o tabuleiro
-let resetBoard = () => {
+const resetBoard = () => {
     [hasFlippedCard, lockBoard] = [false, false];
     [firstCard, secondCard] = [null, null];
 }
@@ -31,6 +31,7 @@ function flipCard() {
 
     secondCard = this;
     hasFlippedCard = false;
+    checkForMatch();
    
 }
 
@@ -40,7 +41,7 @@ cards.forEach((card) => {
 });
 
 //funcão que desvira as cartas
-unflipCards = () => {
+const unflipCards = () => {
     lockBoard = true;
 
     setTimeout(() => {
@@ -49,4 +50,22 @@ unflipCards = () => {
 
         resetBoard();
     }, 1500);
+}
+
+//função que checa se as cartas são iguais
+const checkForMatch = () => {
+    if(firstCard.dataset.card === secondCard.dataset.card) {
+        disableCards();
+        return;
+    }
+
+    unflipCards();
+}
+
+//função que desabilita as cartas
+const disableCards = () => {
+    firstCard.removeEventListener('click', flipCard);
+    secondCard.removeEventListener('click', flipCard);
+
+    resetBoard();
 }
